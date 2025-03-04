@@ -11,17 +11,21 @@ public class DbRepository {
     JdbcTemplate jt;
     public DbRepository(JdbcTemplate jt) {this.jt = jt;}
 
-    private Account getCardOwner(Transaction t) {
+    public Account getCardOwner(Transaction t) {
+        String sql = "SELECT * FROM cards WHERE card_number = ? AND pin = ? AND cvc = ?";
+
         return jt.queryForObject(
-                "SELECT * FROM cards WHERE card_number = "+t.card_number+" AND cvc = "+t.cvc+" AND pin = "+t.pin+";",
-                BeanPropertyRowMapper.newInstance(Account.class)
+                sql,
+                BeanPropertyRowMapper.newInstance(Account.class),
+                t.card_number, t.pin, t.cvc
         );
     }
 
     public int payment(Transaction transaction) {
         Account giver = getCardOwner(transaction);
         if(giver != null) {
-            return jt.update("INSERT INTO transactions VALUES (NULL,?,?,'transfer',?,NULL,?)",
+            System.out.println("Numer konta "+giver.account_number);
+            return jt.update("INSERT INTO transactions(giver_account_number,receiver_account_number,transaction_type,amount,description) VALUES (?,?,'transfer',?,?)",
                     giver.account_number,
                     transaction.getReceiver_id(),
                     transaction.getSum(),

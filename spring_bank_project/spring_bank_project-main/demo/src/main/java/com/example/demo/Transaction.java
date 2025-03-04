@@ -9,7 +9,7 @@ public class Transaction {
         return pin;
     }
 
-    public short getCvc() {
+    public String getCvc() {
         return cvc;
     }
 
@@ -33,7 +33,7 @@ public class Transaction {
         this.pin = pin;
     }
 
-    public void setCvc(short cvc) {
+    public void setCvc(String cvc) {
         this.cvc = cvc;
     }
 
@@ -51,7 +51,7 @@ public class Transaction {
 
     String card_number;
     short pin;
-    short cvc;
+    String cvc;
     float sum;
     int receiver_id;
     String description;
