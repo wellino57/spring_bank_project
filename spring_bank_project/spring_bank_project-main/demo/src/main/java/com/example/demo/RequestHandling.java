@@ -25,11 +25,18 @@ public class RequestHandling {
     }
 
     @PostMapping("/generate-blik/{cardNumber}")
-    public int generateBlik(@PathVariable String cardNumber) {
-        int blikCode = new Random().nextInt(900000) + 100000;
-        blikCodes.put(cardNumber, blikCode);
-        blikTimestamps.put(cardNumber, System.currentTimeMillis());
-        return blikCode;
+    public Blik generateBlik(@PathVariable int cardNumber) {
+        return dr.generateBlik(cardNumber);
+    }
+
+    @PutMapping("/updade-blik/{cardNumber}")
+    public Blik updateBlik(@PathVariable int cardNumber) {
+        return dr.updateBlik(cardNumber);
+    }
+
+    @GetMapping("check-blik/{cardNumber}")
+    public Blik checkBlik(@PathVariable int cardNumber) {
+        return dr.checkBlik(cardNumber);
     }
 
     @PostMapping("/confirm-blik")

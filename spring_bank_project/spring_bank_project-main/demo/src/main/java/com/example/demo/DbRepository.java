@@ -5,6 +5,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.smartcardio.Card;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Random;
 
 @Repository
 public class DbRepository {
@@ -32,5 +35,30 @@ public class DbRepository {
                     transaction.getDescription());
         }
         return 0;
+    }
+
+    public Blik generateBlik(int cardId) {
+        Date expiresAt = Date.from(Instant.now().plusSeconds(120));
+        int blikCode = new Random().nextInt(900000) + 100000;
+        jt.update("INSERT INTO blik(card_id,expiration,blik_code) VALUES (?,?,?)",
+                cardId,
+                expiresAt,
+                blikCode);
+        return new Blik(cardId,expiresAt,blikCode);
+    }
+
+    public Blik updateBlik(int cardId) {
+        Date expiresAt = Date.from(Instant.now().plusSeconds(120));
+        int blikCode = new Random().nextInt(900000) + 100000;
+        jt.update("UPDATE blik SET expiration = ?, blik_code = ? WHERE card_id = ?",
+                expiresAt,
+                blikCode,
+                cardId);
+        return new Blik(cardId,expiresAt,blikCode);
+    }
+
+    public Blik checkBlik(int cardId) {
+        Blik blikData = jt.queryForObject("SELECT * FROM blik WHERE card_id = ?", BeanPropertyRowMapper.newInstance(Blik.class),cardId);
+        return blikData;
     }
 }
