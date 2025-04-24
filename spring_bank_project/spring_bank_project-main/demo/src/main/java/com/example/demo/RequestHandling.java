@@ -29,7 +29,7 @@ public class RequestHandling {
         return dr.generateBlik(cardNumber);
     }
 
-    @PutMapping("/updade-blik/{cardNumber}")
+    @PutMapping("/update-blik/{cardNumber}")
     public Blik updateBlik(@PathVariable int cardNumber) {
         return dr.updateBlik(cardNumber);
     }

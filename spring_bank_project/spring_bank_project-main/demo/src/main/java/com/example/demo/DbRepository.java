@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.smartcardio.Card;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Repository
@@ -38,13 +39,11 @@ public class DbRepository {
     }
 
     public Blik generateBlik(int cardId) {
-        Date expiresAt = Date.from(Instant.now().plusSeconds(120));
         int blikCode = new Random().nextInt(900000) + 100000;
-        jt.update("INSERT INTO blik(card_id,expiration,blik_code) VALUES (?,?,?)",
+        jt.update("INSERT INTO blik(card_id,blik_code) VALUES (?,?)",
                 cardId,
-                expiresAt,
                 blikCode);
-        return new Blik(cardId,expiresAt,blikCode);
+        return new Blik(cardId,blikCode);
     }
 
     public Blik updateBlik(int cardId) {
@@ -54,11 +53,11 @@ public class DbRepository {
                 expiresAt,
                 blikCode,
                 cardId);
-        return new Blik(cardId,expiresAt,blikCode);
+        return new Blik(cardId,blikCode);
     }
 
     public Blik checkBlik(int cardId) {
-        Blik blikData = jt.queryForObject("SELECT * FROM blik WHERE card_id = ?", BeanPropertyRowMapper.newInstance(Blik.class),cardId);
-        return blikData;
+        List<Blik> blikData = jt.query("SELECT * FROM blik WHERE card_id = ?", BeanPropertyRowMapper.newInstance(Blik.class),cardId);
+        return blikData.isEmpty() ? new Blik(-1, -1) : blikData.get(0);
     }
 }

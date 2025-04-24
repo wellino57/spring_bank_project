@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Blik {
@@ -51,10 +54,14 @@ public class Blik {
 
     public Blik() {}
 
-    public Blik(int card_id, Date expiration, int blik_code) {
+    public Blik(int card_id, int blik_code) {
         this.blik_id = 0;
         this.card_id = card_id;
-        this.expiration = expiration;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 2);
+        this.expiration = calendar.getTime();
+
         this.blik_code = blik_code;
         this.requested = false;
     }
