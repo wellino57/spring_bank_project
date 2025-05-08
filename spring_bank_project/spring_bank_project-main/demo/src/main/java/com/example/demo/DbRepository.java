@@ -60,4 +60,10 @@ public class DbRepository {
         List<Blik> blikData = jt.query("SELECT * FROM blik WHERE card_id = ?", BeanPropertyRowMapper.newInstance(Blik.class),cardId);
         return blikData.isEmpty() ? new Blik(-1, -1) : blikData.get(0);
     }
+
+    public int requestBlik(String requested,int blikCode) {
+        return jt.update("UPDATE blik SET requested = ? WHERE blik_code = ?",
+                requested,
+                blikCode);
+    }
 }

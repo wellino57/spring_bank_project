@@ -38,11 +38,11 @@ public class Blik {
         this.blik_code = blik_code;
     }
 
-    public boolean isRequested() {
+    public String getRequested() {
         return requested;
     }
 
-    public void setRequested(boolean requested) {
+    public void setRequested(String requested) {
         this.requested = requested;
     }
 
@@ -50,7 +50,7 @@ public class Blik {
     public int card_id;
     public Date expiration;
     public int blik_code;
-    public boolean requested;
+    public String requested;
 
     public Blik() {}
 
@@ -63,6 +63,6 @@ public class Blik {
         this.expiration = calendar.getTime();
 
         this.blik_code = blik_code;
-        this.requested = false;
+        this.requested = "";
     }
 }

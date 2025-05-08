@@ -61,4 +61,9 @@ public class RequestHandling {
         }
         return "Invalid BLIK Code";
     }
+
+    @PutMapping("/request-blik")
+    public int requestBlik(@RequestParam String requested, @RequestParam int blikCode) {
+        return dr.requestBlik(requested,blikCode);
+    }
 }
