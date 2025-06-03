@@ -40,6 +40,8 @@ public class DbRepository {
 
     public Blik generateBlik(int cardId) {
         int blikCode = new Random().nextInt(900000) + 100000;
+        jt.update("DELETE FROM blik WHERE card_id = ?",
+                cardId);
         jt.update("INSERT INTO blik(card_id,blik_code) VALUES (?,?)",
                 cardId,
                 blikCode);
@@ -49,7 +51,7 @@ public class DbRepository {
     public Blik updateBlik(int cardId) {
         Date expiresAt = Date.from(Instant.now().plusSeconds(120));
         int blikCode = new Random().nextInt(900000) + 100000;
-        jt.update("UPDATE blik SET expiration = ?, blik_code = ? WHERE card_id = ?",
+        jt.update("UPDATE blik SET expiration = ?, blik_code = ?, requested = '' WHERE card_id = ?",
                 expiresAt,
                 blikCode,
                 cardId);
